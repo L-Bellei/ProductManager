@@ -28,7 +28,7 @@ public class ProcuctRepository : IProductRepository
         await _context.Products.AddAsync(product);
     }
 
-    public async Task Update(Product product)
+    public void Update(Product product)
     {
         _context.Products.Update(product);
     }
