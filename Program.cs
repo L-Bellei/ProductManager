@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using ProductManager.Domain.Interfaces.Repositories;
 using ProductManager.Infra.Contexts;
+using ProductManager.Infra.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,8 @@ builder.Services.AddDbContext<ProductContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<IProductRepository, ProcuctRepository>();
 
 var app = builder.Build();
 
