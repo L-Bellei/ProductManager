@@ -1,4 +1,5 @@
 ﻿using ProductManager.Domain.Enums;
+using ProductManager.Domain.Views;
 
 namespace ProductManager.Domain.Entities;
 

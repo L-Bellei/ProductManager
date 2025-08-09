@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using ProductManager.Configuration;
+using ProductManager.Domain.Interfaces;
 using ProductManager.Domain.Interfaces.Repositories;
+using ProductManager.Domain.Interfaces.Services;
+using ProductManager.Domain.Notifier;
+using ProductManager.Domain.Services;
 using ProductManager.Infra.Contexts;
 using ProductManager.Infra.Repositories;
 
@@ -14,6 +19,10 @@ builder.Services.AddDbContext<ProductContext>(options =>
 });
 
 builder.Services.AddScoped<IProductRepository, ProcuctRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<INotifier, Notifier>();
+
+builder.Services.AddAutoMapperConfiguration();
 
 var app = builder.Build();
 

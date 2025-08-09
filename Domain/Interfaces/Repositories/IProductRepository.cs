@@ -4,10 +4,11 @@ namespace ProductManager.Domain.Interfaces.Repositories;
 
 public interface IProductRepository
 {
-    Task<Product> GetById(Guid id);
+    Task<Product?> GetById(Guid id);
+    Task<Product?> GetByName(string name);
     Task<IEnumerable<Product>> GetAll();
     Task Add(Product product);
     void Update(Product product);
-    Task Delete(Guid id);
+    void Delete(Product product);
     Task Commit();
 }

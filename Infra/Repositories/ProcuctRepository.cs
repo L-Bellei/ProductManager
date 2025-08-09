@@ -5,43 +5,31 @@ using ProductManager.Infra.Contexts;
 
 namespace ProductManager.Infra.Repositories;
 
-public class ProcuctRepository : IProductRepository
+public class ProcuctRepository(ProductContext context) : IProductRepository
 {
-    private readonly ProductContext _context;
-    public ProcuctRepository(ProductContext context)
-    {
-        _context = context;
-    }
+    private readonly ProductContext _context = context;
 
-    public async Task<Product> GetById(Guid id)
-    {
-        return await _context.Products.FindAsync(id) ?? throw new KeyNotFoundException("Product not found");
-    }
+    public async Task<Product?> GetById(Guid id) => await _context.Products
+            .AsNoTracking()
+            .FirstOrDefaultAsync(prd => prd.Id == id);
 
-    public async Task<IEnumerable<Product>> GetAll()
-    {
-        return await _context.Products.ToListAsync();
-    }
+    public async Task<Product?> GetByName(string name) => await _context.Products
+            .AsNoTracking()
+            .FirstOrDefaultAsync(prd => prd.Name == name);
 
-    public async Task Add(Product product)
-    {
-        await _context.Products.AddAsync(product);
-    }
+    public async Task<IEnumerable<Product>> GetAll() => await _context.Products
+            .AsNoTracking()
+            .ToListAsync();
 
-    public void Update(Product product)
-    {
-        _context.Products.Update(product);
-    }
+    public async Task Add(Product product) => await _context.Products
+        .AddAsync(product);
 
-    public async Task Delete(Guid id)
-    {
-        var product = await GetById(id);
+    public void Update(Product product) => _context.Products
+        .Update(product);
 
-        _context.Products.Remove(product);
-    }
+    public void Delete(Product product) => _context.Products
+        .Remove(product);
 
-    public async Task Commit()
-    {
-        await _context.SaveChangesAsync();
-    }
+    public async Task Commit() => await _context
+        .SaveChangesAsync();
 }
